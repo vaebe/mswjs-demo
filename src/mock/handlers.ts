@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { db } from './database'
 import { getApiUrl, paginate, sendJson } from './utils'
 
-type RequireUserInfo = Required<UserInfo>
-
 export const userHandlers = [
   // 获取用户列表
   http.post(getApiUrl('api/user/getList'), () => {
@@ -27,8 +25,11 @@ export const userHandlers = [
   }),
 
   // 创建用户
-  http.post(getApiUrl('api/user/create'), async ({ request }) => {
-    const newUser = await request.json() as UserInfo
+  /**
+   * <never, Omit<UserInfo, 'id'>> 表示：Params、RequestBodyType、ResponseBodyType、RequestPath 类型
+   */
+  http.post<never, Omit<UserInfo, 'id'>>(getApiUrl('api/user/create'), async ({ request }) => {
+    const newUser = await request.json()
 
     // 向 user 表中添加一个用户数据
     const user = db.user.create({
@@ -63,8 +64,8 @@ export const userHandlers = [
   }),
 
   // 更新用户
-  http.post<RequireUserInfo, UserInfo>(getApiUrl('api/user/update'), async ({ request }) => {
-    const newUser = await request.json() as UserInfo
+  http.post<never, UserInfo>(getApiUrl('api/user/update'), async ({ request }) => {
+    const newUser = await request.json()
 
     // 获取所有用户数据
     const userList = db.user.getAll()
