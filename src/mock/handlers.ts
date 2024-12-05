@@ -6,7 +6,7 @@ import { getApiUrl, paginate, sendJson } from './utils'
 
 type RequireUserInfo = Required<UserInfo>
 
-export const handlers = [
+export const userHandlers = [
   // 获取用户列表
   http.post(getApiUrl('api/user/getList'), () => {
     const allList = db.user.getAll()
@@ -68,3 +68,5 @@ export const handlers = [
     }
   }),
 ]
+
+export const allHandlers = [...userHandlers]
