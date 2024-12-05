@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useWebSocket } from '@vueuse/core'
 import { v4 as uuidv4 } from 'uuid'
-import { onBeforeUnmount, ref } from 'vue'
+import { ref } from 'vue'
 
 interface WsDataItem {
   uid: string
@@ -38,10 +38,6 @@ function sendMsg() {
   // 发送消息后清空输入框
   msgText.value = ''
 }
-
-onBeforeUnmount(() => {
-  close()
-})
 </script>
 
 <template>
@@ -62,6 +58,12 @@ onBeforeUnmount(() => {
       <tiny-input v-model="msgText" placeholder="请输入要发送的消息" />
       <tiny-button @click="sendMsg">
         发送
+      </tiny-button>
+      <tiny-button v-if="status !== 'OPEN'" @click="open">
+        打开连接
+      </tiny-button>
+      <tiny-button v-else @click="close()">
+        关闭连接
       </tiny-button>
     </div>
   </tiny-card>

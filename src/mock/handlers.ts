@@ -92,31 +92,36 @@ const wsChat = ws.link('ws://wsChat')
 
 // 创建发送的 ws 消息
 function createWsMsg(text?: string) {
-  return {
+  return JSON.stringify({
     uid: uuidv4(),
     name: `wsChat`,
     data: text ?? `这是 wsChat 返回的消息 ${dayjs().format('YYYY-MM-DD HH:mm:ss')}`,
-  }
+  })
 }
 
 export const wsHandlers = [
   // 监听 ws 连接
   wsChat.addEventListener('connection', ({ client }) => {
-    // 向客户端发送消息
-    client.send(JSON.stringify(createWsMsg('连接成功！')))
+    // 首次连接向客户端发送连接成功的消息
+    client.send(createWsMsg('连接成功！'))
 
     // 监听客户端发送的消息
     client.addEventListener('message', (event) => {
       // 向客户端发送消息
-      client.send(JSON.stringify(createWsMsg()))
+      client.send(createWsMsg())
 
       // 除了发送数据的客户端,所有已连接的客户端都将接收到发送的数据
-      wsChat.broadcastExcept(client, JSON.stringify(createWsMsg(`这是一条广播消息除了发送数据的客户端都会收到！${event.data}`)))
+      wsChat.broadcastExcept(client, createWsMsg(`这是一条广播消息除了发送数据的客户端都会收到！${event.data}`))
 
       // 所有已连接的客户端都将接收到发送的数据
-      wsChat.broadcast(JSON.stringify(createWsMsg('这是一条广播消息所有用户都会收到！')))
+      wsChat.broadcast(createWsMsg('这是一条广播消息所有用户都会收到！'))
 
       console.warn('wsChat 收到的消息:', event.data)
+    })
+
+    // 监听客户端断开连接
+    client.addEventListener('close', () => {
+      wsChat.broadcast(createWsMsg(`客户端断开连接${client.id}`))
     })
   }),
 ]
