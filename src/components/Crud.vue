@@ -110,8 +110,6 @@ function toolbarButtonClickEvent({ code, $grid }: { code: string, $grid: Record<
       }
 
       editUser(data[0])
-
-      $grid.removeSelecteds()
       break
     }
     case 'delete': {
@@ -124,8 +122,6 @@ function toolbarButtonClickEvent({ code, $grid }: { code: string, $grid: Record<
           delUser(item.id)
         })
       }
-
-      $grid.removeSelecteds()
       break
     }
   }
