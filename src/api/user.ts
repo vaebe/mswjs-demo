@@ -24,12 +24,12 @@ export function getUserList(data: GetUserListParams): Promise<ResultPageListData
 }
 
 // 保存用户信息
-export function saveUserInfo(data: UserInfo): Promise<ResultData<{ id: string }>> {
+export function addUser(data: UserInfo): Promise<ResultData<{ id: string }>> {
   return Api.post('/user/create', data)
 }
 
 // 更新用户信息
-export function updateUserInfo(data: UserInfo): Promise<ResultData<string>> {
+export function updateUser(data: UserInfo): Promise<ResultData<string>> {
   return Api.post('/user/update', data)
 }
 

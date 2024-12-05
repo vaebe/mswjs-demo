@@ -7,8 +7,13 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Crud: typeof import('./src/components/Crud.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     TinyAlert: typeof import('@opentiny/vue')['Alert']
     TinyButton: typeof import('@opentiny/vue')['Button']
+    TinyGrid: typeof import('@opentiny/vue')['Grid']
+    TinyGridColumn: typeof import('@opentiny/vue')['GridColumn']
+    TinyGridToolbar: typeof import('@opentiny/vue')['GridToolbar']
+    TinyImage: typeof import('@opentiny/vue')['Image']
   }
 }

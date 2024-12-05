@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-globals */
+/* eslint-disable */
 /* tslint:disable */
 
 /**
@@ -13,15 +13,15 @@ const INTEGRITY_CHECKSUM = 'ca7800994cc8bfb5eb961e037c877074'
 const IS_MOCKED_RESPONSE = Symbol('isMockedResponse')
 const activeClientIds = new Set()
 
-self.addEventListener('install', () => {
+self.addEventListener('install', function () {
   self.skipWaiting()
 })
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', function (event) {
   event.waitUntil(self.clients.claim())
 })
 
-self.addEventListener('message', async (event) => {
+self.addEventListener('message', async function (event) {
   const clientId = event.source.id
 
   if (!clientId || !self.clients) {
@@ -94,7 +94,7 @@ self.addEventListener('message', async (event) => {
   }
 })
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', function (event) {
   const { request } = event
 
   // Bypass navigation requests.

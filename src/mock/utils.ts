@@ -15,3 +15,8 @@ export function sendJson(code: number, data: any, msg: string = '') {
   const info = { code, data, msg }
   return HttpResponse.json(info, { status: 200 })
 }
+
+export function paginate<T>(table: T[], page = 1, pageSize = 10) {
+  const offset = (page - 1) * pageSize
+  return table.slice(offset, offset + pageSize)
+}
