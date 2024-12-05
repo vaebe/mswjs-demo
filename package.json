@@ -13,6 +13,7 @@
     "@opentiny/vue": "3",
     "@opentiny/vue-notify": "^3.20.0",
     "@opentiny/vue-vite-import": "^1.2.0",
+    "@vueuse/core": "^12.0.0",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
     "qs": "^6.13.1",

@@ -11,9 +11,12 @@ declare module 'vue' {
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     TinyAlert: typeof import('@opentiny/vue')['Alert']
     TinyButton: typeof import('@opentiny/vue')['Button']
+    TinyCard: typeof import('@opentiny/vue')['Card']
     TinyGrid: typeof import('@opentiny/vue')['Grid']
     TinyGridColumn: typeof import('@opentiny/vue')['GridColumn']
     TinyGridToolbar: typeof import('@opentiny/vue')['GridToolbar']
     TinyImage: typeof import('@opentiny/vue')['Image']
+    TinyInput: typeof import('@opentiny/vue')['Input']
+    Ws: typeof import('./src/components/Ws.vue')['default']
   }
 }

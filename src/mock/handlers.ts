@@ -1,5 +1,6 @@
 import type { UserInfo } from '@/api/user'
-import { http } from 'msw'
+import dayjs from 'dayjs'
+import { http, ws } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import { db } from './database'
 import { getApiUrl, paginate, sendJson } from './utils'
@@ -86,4 +87,38 @@ export const userHandlers = [
   }),
 ]
 
-export const allHandlers = [...userHandlers]
+// ws = http wss = https
+const wsChat = ws.link('ws://wsChat')
+
+// 创建发送的 ws 消息
+function createWsMsg(text?: string) {
+  return {
+    uid: uuidv4(),
+    name: `wsChat`,
+    data: text ?? `这是 wsChat 返回的消息 ${dayjs().format('YYYY-MM-DD HH:mm:ss')}`,
+  }
+}
+
+export const wsHandlers = [
+  // 监听 ws 连接
+  wsChat.addEventListener('connection', ({ client }) => {
+    // 向客户端发送消息
+    client.send(JSON.stringify(createWsMsg('连接成功！')))
+
+    // 监听客户端发送的消息
+    client.addEventListener('message', (event) => {
+      // 向客户端发送消息
+      client.send(JSON.stringify(createWsMsg()))
+
+      // 除了发送数据的客户端,所有已连接的客户端都将接收到发送的数据
+      wsChat.broadcastExcept(client, JSON.stringify(createWsMsg(`这是一条广播消息除了发送数据的客户端都会收到！${event.data}`)))
+
+      // 所有已连接的客户端都将接收到发送的数据
+      wsChat.broadcast(JSON.stringify(createWsMsg('这是一条广播消息所有用户都会收到！')))
+
+      console.warn('wsChat 收到的消息:', event.data)
+    })
+  }),
+]
+
+export const allHandlers = [...userHandlers, ...wsHandlers]
